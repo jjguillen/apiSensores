@@ -14,11 +14,12 @@ public class SensorService {
         this.influxDBRepository = influxDBRepository;
     }
 
-    public void saveData(String location, double value) {
-        influxDBRepository.saveData(location, value);
+    public void saveData(Long sensorId, double value) {
+        //Falta sacar el tipo de sensor haciendo una consulta a la base de datos
+        influxDBRepository.saveData(sensorId, value);
     }
 
-    public List<FluxTable> getDataByLocation(String location) {
-        return influxDBRepository.getDataByLocation(location);
+    public List<FluxTable> getDataBySensorId(Long sensorId) {
+        return influxDBRepository.getDataBySensorId(sensorId);
     }
 }

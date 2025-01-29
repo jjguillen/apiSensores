@@ -27,12 +27,12 @@ public class InfluxDBRepository {
     }
 
     // Método para escribir datos en InfluxDB
-    public void saveData(String location, double value) {
+    public void saveData(Long sensorId, double value) {
         WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
 
         //En este caso indicamos que el sensor es de temperatura
         Point point = Point.measurement("temperature")
-                .addTag("location", location)
+                .addTag("sensorId", String.valueOf(sensorId))
                 .addField("value", value)
                 .time(Instant.now(), WritePrecision.MS);
 
@@ -40,11 +40,11 @@ public class InfluxDBRepository {
     }
 
     // Método para leer datos desde InfluxDB
-    public List<FluxTable> getDataByLocation(String location) {
+    public List<FluxTable> getDataBySensorId(Long sensorId) {
         //Modificar el rango de tiempo si es necesario
         String query = String.format(
-                "from(bucket: \"%s\") |> range(start: -1h) |> filter(fn: (r) => r[\"location\"] == \"%s\")",
-                bucket, location);
+                "from(bucket: \"%s\") |> range(start: -1h) |> filter(fn: (r) => r[\"sensorId\"] == \"%s\")",
+                bucket, sensorId);
 
         return influxDBClient.getQueryApi().query(query, org);
     }

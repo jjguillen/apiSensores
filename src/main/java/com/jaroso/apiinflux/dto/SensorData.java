@@ -1,22 +1,25 @@
 package com.jaroso.apiinflux.dto;
 
+import lombok.Data;
+
+
 public class SensorData {
-    private String location;
+    private Long sensorId;
     private double value;
 
     public SensorData() {}
 
-    public SensorData(String location, double value) {
-        this.location = location;
+    public SensorData(Long sensorId, double value) {
+        this.sensorId = sensorId;
         this.value = value;
     }
 
-    public String getLocation() {
-        return location;
+    public Long getSensorId() {
+        return sensorId;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
     }
 
     public double getValue() {
