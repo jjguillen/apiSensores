@@ -1,0 +1,26 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=influx
+      - INFLUXDB_ADMIN_PASSWORD=influx
+  db:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: always
+    environment:
+        MARIADB_ROOT_PASSWORD: toor
+        MARIADB_DATABASE: apisensores
+        MARIADB_USER: influx
+        MARIADB_PASSWORD: influx
+    ports:
+        - "3307:3306"
+    volumes:
+        - ./mariadb:/var/lib/mysql
+volumes:
+  influxdb-storage:
