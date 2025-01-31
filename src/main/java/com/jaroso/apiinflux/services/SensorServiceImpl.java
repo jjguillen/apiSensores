@@ -1,5 +1,6 @@
 package com.jaroso.apiinflux.services;
 
+import com.jaroso.apiinflux.dto.SensorDTO;
 import com.jaroso.apiinflux.entities.Plantacion;
 import com.jaroso.apiinflux.entities.Sensor;
 import com.jaroso.apiinflux.repositories.PlantacionRepository;
@@ -7,6 +8,7 @@ import com.jaroso.apiinflux.repositories.SensorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -20,8 +22,21 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public void saveSensor(Sensor sensor) {
-        sensorRepository.save(sensor);
+    public Sensor saveSensor(SensorDTO sensorDTO) {
+        Optional<Plantacion> plantacionOpt = plantacionRepository.findById(sensorDTO.getPlantacionId());
+
+        if (plantacionOpt.isEmpty()) {
+            throw new RuntimeException("Plantación no encontrada");
+        }
+
+        Sensor sensor = new Sensor();
+        sensor.setTipo(Sensor.Tipo.valueOf(sensorDTO.getTipo()));
+        sensor.setPlantacion(plantacionOpt.get());
+        sensor.setUbicLatitud(sensorDTO.getUbicLatitud());
+        sensor.setUbicLongitud(sensorDTO.getUbicLongitud());
+        sensor.setUnidadMedida(sensorDTO.getUnidadMedida());
+
+        return sensorRepository.save(sensor);
     }
 
     @Override
@@ -41,7 +56,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public List<Sensor> getSensoresByTipoAndPlantacion(Sensor.Tipo tipo, Long idPlantacion) {
-        Plantacion plantacion = plantacionRepository.getPlantacionById(idPlantacion).orElse(null);
+        Plantacion plantacion = plantacionRepository.findPlantacionById(idPlantacion).orElse(null);
         if (plantacion == null) {
             return List.of();
         } else
@@ -50,7 +65,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public List<Sensor> getSensoresByPlantacion(Long idPlantacion) {
-        Plantacion plantacion = plantacionRepository.getPlantacionById(idPlantacion).orElse(null);
+        Plantacion plantacion = plantacionRepository.findPlantacionById(idPlantacion).orElse(null);
         if (plantacion == null) {
             return List.of();
         } else

@@ -1,5 +1,6 @@
 package com.jaroso.apiinflux.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -28,7 +29,8 @@ public class Sensor {
     @Column(name = "ubic_longitud")
     private Double ubicLongitud;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "plantacion_id", nullable = false)
     private Plantacion plantacion;
 
@@ -99,7 +101,7 @@ public class Sensor {
                 ", unidadMedida='" + unidadMedida + '\'' +
                 ", ubicLatitud=" + ubicLatitud +
                 ", ubicLongitud=" + ubicLongitud +
-                ", plantacion=" + plantacion +
+                ", plantacion=" + plantacion.getId() +
                 '}';
     }
 }

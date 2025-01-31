@@ -17,6 +17,12 @@ public class Plantacion {
     //En el futuro podría ser una relación List<Coordenada>
     private String ubicacion;
 
+    private String pais;
+
+    private String provincia;
+
+    private String ciudad;
+
     @Column(name = "tipo_producto")
     private String tipoProducto;
 
@@ -26,16 +32,22 @@ public class Plantacion {
     public Plantacion() {
     }
 
-    public Plantacion(Long id, String nombre, String ubicacion, String tipoProducto) {
+    public Plantacion(Long id, String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto) {
         this.id = id;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
+        this.pais = pais;
+        this.provincia = provincia;
+        this.ciudad = ciudad;
         this.tipoProducto = tipoProducto;
     }
 
-    public Plantacion(String nombre, String ubicacion, String tipoProducto) {
+    public Plantacion(String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto) {
         this.nombre = nombre;
         this.ubicacion = ubicacion;
+        this.pais = pais;
+        this.provincia = provincia;
+        this.ciudad = ciudad;
         this.tipoProducto = tipoProducto;
     }
 
@@ -63,6 +75,30 @@ public class Plantacion {
         this.ubicacion = ubicacion;
     }
 
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
     public String getTipoProducto() {
         return tipoProducto;
     }
@@ -85,6 +121,9 @@ public class Plantacion {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", ubicacion='" + ubicacion + '\'' +
+                ", pais='" + pais + '\'' +
+                ", provincia='" + provincia + '\'' +
+                ", ciudad='" + ciudad + '\'' +
                 ", tipoProducto='" + tipoProducto + '\'' +
                 ", sensores=" + sensores +
                 '}';

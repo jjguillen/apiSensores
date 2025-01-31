@@ -18,8 +18,8 @@ public class ApiInfluxApplication {
         var plantacionRepository = context.getBean(PlantacionRepository.class);
         var sensorRepository = context.getBean(SensorRepository.class);
 
-        Plantacion pl1 = new Plantacion("Trops-1", "36.721261, -4.421265", "Mango");
-        Plantacion pl2 = new Plantacion("Trops-2", "37.721261, -4.521265", "Aguacate");
+        Plantacion pl1 = new Plantacion("Trops-1", "36.721261, -4.421265", "España", "Almería", "Cuevas", "Mango");
+        Plantacion pl2 = new Plantacion("Trops-2", "37.721261, -4.521265", "España", "Almería", "Vera", "Aguacate");
 
         List<Plantacion> plantaciones = List.of(pl1, pl2);
         plantacionRepository.saveAll(plantaciones);
