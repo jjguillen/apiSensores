@@ -10,7 +10,7 @@ import java.util.List;
 public interface SensorService {
     public Sensor saveSensor(SensorDTO sensorDTO);
     public Sensor getSensorById(Long id);
-    public void deleteSensorById(Long id);
+    public String deleteSensorById(Long id);
     public List<Sensor> getAllSensores();
     public List<Sensor> getSensoresByTipoAndPlantacion(Sensor.Tipo tipo, Long idPlantacion);
     public List<Sensor> getSensoresByPlantacion(Long idPlantacion);

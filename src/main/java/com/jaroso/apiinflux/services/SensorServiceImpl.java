@@ -45,8 +45,9 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public void deleteSensorById(Long id) {
+    public String deleteSensorById(Long id) {
         sensorRepository.deleteById(id);
+        return "Sensor " + id + " eliminado";
     }
 
     @Override

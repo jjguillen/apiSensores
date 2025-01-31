@@ -43,4 +43,9 @@ public class PlantacionController {
         return plantacionService.savePlantacion(plantacion);
     }
 
+    @DeleteMapping("/{id}")
+    public String deletePlantacion(@PathVariable String id) {
+        return plantacionService.deletePlantacionById(Long.valueOf(id));
+    }
+
 }

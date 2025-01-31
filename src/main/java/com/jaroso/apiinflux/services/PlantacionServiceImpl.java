@@ -29,8 +29,9 @@ public class PlantacionServiceImpl implements PlantacionService {
     }
 
     @Override
-    public void deletePlantacionById(Long id) {
+    public String deletePlantacionById(Long id) {
         plantacionRepository.deleteById(id);
+        return "Plantación " + id + " eliminada";
     }
 
     @Override

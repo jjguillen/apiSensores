@@ -5,6 +5,7 @@ import com.influxdb.client.WriteApiBlocking;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxTable;
+import com.jaroso.apiinflux.entities.Sensor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class InfluxDBRepository {
 
     private final InfluxDBClient influxDBClient;
+    private final SensorRepository sensorRepository;
 
     @Value("${influx.bucket}")
     private String bucket;
@@ -22,16 +24,20 @@ public class InfluxDBRepository {
     @Value("${influx.org}")
     private String org;
 
-    public InfluxDBRepository(InfluxDBClient influxDBClient) {
+    public InfluxDBRepository(InfluxDBClient influxDBClient, SensorRepository sensorRepository) {
         this.influxDBClient = influxDBClient;
+        this.sensorRepository = sensorRepository;
     }
 
     // Método para escribir datos en InfluxDB
     public void saveData(Long sensorId, double value) {
+        //Get the sensor from DB
+        Sensor sensor = sensorRepository.findById(sensorId).orElseThrow();
+
         WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
 
         //En este caso indicamos que el sensor es de temperatura
-        Point point = Point.measurement("temperature")
+        Point point = Point.measurement(sensor.getTipo().toString())
                 .addTag("sensorId", String.valueOf(sensorId))
                 .addField("value", value)
                 .time(Instant.now(), WritePrecision.MS);

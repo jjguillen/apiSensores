@@ -10,7 +10,7 @@ import java.util.List;
 public interface PlantacionService {
     public Plantacion savePlantacion(Plantacion plantacion);
     public Plantacion getPlantacionById(Long id);
-    public void deletePlantacionById(Long id);
+    public String deletePlantacionById(Long id);
     public List<Plantacion> getAllPlantaciones();
     public List<Plantacion> getPlantacionByTipoProducto(String tipoProducto);
 }
