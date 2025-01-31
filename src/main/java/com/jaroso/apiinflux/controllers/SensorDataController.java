@@ -11,21 +11,31 @@ import java.util.List;
 @RequestMapping("/api/data")
 public class SensorDataController {
 
-    private final SensorDataService sensorService;
+    private final SensorDataService sensorDataService;
 
 
-    public SensorDataController(SensorDataService sensorService) {
-        this.sensorService = sensorService;
+    public SensorDataController(SensorDataService sensorService, SensorDataService sensorDataService) {
+        this.sensorDataService = sensorDataService;
     }
 
     @PostMapping
     public String writeData(@RequestBody SensorData data) {
-        sensorService.saveData(data.getSensorId(), data.getValue());
+        sensorDataService.saveData(data.getSensorId(), data.getValue());
         return "Datos escritos correctamente";
     }
 
     @GetMapping
     public List<FluxTable> readData(@RequestParam Long sensorId) {
-        return sensorService.getDataBySensorId(sensorId);
+        return sensorDataService.getDataBySensorId(sensorId);
+    }
+
+    @GetMapping("/hour")
+    public List<FluxTable> readDataOneHour(@RequestParam Long sensorId) {
+        return sensorDataService.getDataOneHourBySensorId(sensorId);
+    }
+
+    @GetMapping("/day")
+    public List<FluxTable> readDataOneDay(@RequestParam Long sensorId) {
+        return sensorDataService.getDataOneDayBySensorId(sensorId);
     }
 }

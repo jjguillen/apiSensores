@@ -22,4 +22,12 @@ public class SensorDataService {
     public List<FluxTable> getDataBySensorId(Long sensorId) {
         return influxDBRepository.getDataBySensorId(sensorId);
     }
+
+    public List<FluxTable> getDataOneHourBySensorId(Long sensorId) {
+        return influxDBRepository.getDataOneHourBySensorId(sensorId);
+    }
+
+    public List<FluxTable> getDataOneDayBySensorId(Long sensorId) {
+        return influxDBRepository.getDataOneDayBySensorId(sensorId);
+    }
 }

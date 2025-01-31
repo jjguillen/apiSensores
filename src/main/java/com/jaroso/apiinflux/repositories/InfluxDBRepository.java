@@ -49,7 +49,27 @@ public class InfluxDBRepository {
     public List<FluxTable> getDataBySensorId(Long sensorId) {
         //Modificar el rango de tiempo si es necesario
         String query = String.format(
+                "from(bucket: \"%s\") |> range(start: 0) |> filter(fn: (r) => r[\"sensorId\"] == \"%s\")",
+                bucket, sensorId);
+
+        return influxDBClient.getQueryApi().query(query, org);
+    }
+
+    // Método para leer datos desde InfluxDB
+    public List<FluxTable> getDataOneHourBySensorId(Long sensorId) {
+        //Modificar el rango de tiempo si es necesario
+        String query = String.format(
                 "from(bucket: \"%s\") |> range(start: -1h) |> filter(fn: (r) => r[\"sensorId\"] == \"%s\")",
+                bucket, sensorId);
+
+        return influxDBClient.getQueryApi().query(query, org);
+    }
+
+    // Método para leer datos desde InfluxDB
+    public List<FluxTable> getDataOneDayBySensorId(Long sensorId) {
+        //Modificar el rango de tiempo si es necesario
+        String query = String.format(
+                "from(bucket: \"%s\") |> range(start: -24h) |> filter(fn: (r) => r[\"sensorId\"] == \"%s\")",
                 bucket, sensorId);
 
         return influxDBClient.getQueryApi().query(query, org);
