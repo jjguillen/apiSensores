@@ -1,25 +1,17 @@
 package com.jaroso.apiinflux.services;
 
-import com.influxdb.query.FluxTable;
-import com.jaroso.apiinflux.repositories.InfluxDBRepository;
+import com.jaroso.apiinflux.entities.Sensor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
-public class SensorService {
+public interface SensorService {
+    public void saveSensor(Sensor sensor);
+    public Sensor getSensorById(Long id);
+    public void deleteSensorById(Long id);
+    public List<Sensor> getAllSensores();
+    public List<Sensor> getSensoresByTipoAndPlantacion(Sensor.Tipo tipo, Long idPlantacion);
+    public List<Sensor> getSensoresByPlantacion(Long idPlantacion);
 
-    private final InfluxDBRepository influxDBRepository;
-
-    public SensorService(InfluxDBRepository influxDBRepository) {
-        this.influxDBRepository = influxDBRepository;
-    }
-
-    public void saveData(Long sensorId, double value) {
-        //Falta sacar el tipo de sensor haciendo una consulta a la base de datos
-        influxDBRepository.saveData(sensorId, value);
-    }
-
-    public List<FluxTable> getDataBySensorId(Long sensorId) {
-        return influxDBRepository.getDataBySensorId(sensorId);
-    }
 }

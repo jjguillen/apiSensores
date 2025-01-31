@@ -5,11 +5,19 @@ import jakarta.persistence.*;
 @Entity
 public class Sensor {
 
+    public enum Tipo {
+        TEMPERATURA,
+        HUMEDAD,
+        LUMINOSIDAD,
+        VIENTO,
+        LLUVIA
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tipo;
+    private Tipo tipo;
 
     @Column(name = "unidad_medida")
     private String unidadMedida;
@@ -20,15 +28,19 @@ public class Sensor {
     @Column(name = "ubic_longitud")
     private Double ubicLongitud;
 
+    @ManyToOne
+    @JoinColumn(name = "plantacion_id", nullable = false)
+    private Plantacion plantacion;
+
     public Sensor() {
     }
 
-    public Sensor(Long id, String tipo, String unidadMedida, Double ubicLatitud, Double ubicLongitud) {
-        this.id = id;
+    public Sensor(Tipo tipo, String unidadMedida, Double ubicLatitud, Double ubicLongitud, Plantacion plantacion) {
         this.tipo = tipo;
         this.unidadMedida = unidadMedida;
         this.ubicLatitud = ubicLatitud;
         this.ubicLongitud = ubicLongitud;
+        this.plantacion = plantacion;
     }
 
     public Long getId() {
@@ -39,11 +51,11 @@ public class Sensor {
         this.id = id;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
@@ -71,6 +83,14 @@ public class Sensor {
         this.ubicLongitud = ubicLongitud;
     }
 
+    public Plantacion getPlantacion() {
+        return plantacion;
+    }
+
+    public void setPlantacion(Plantacion plantacion) {
+        this.plantacion = plantacion;
+    }
+
     @Override
     public String toString() {
         return "Sensor{" +
@@ -79,6 +99,7 @@ public class Sensor {
                 ", unidadMedida='" + unidadMedida + '\'' +
                 ", ubicLatitud=" + ubicLatitud +
                 ", ubicLongitud=" + ubicLongitud +
+                ", plantacion=" + plantacion +
                 '}';
     }
 }

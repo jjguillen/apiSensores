@@ -3,6 +3,8 @@ package com.jaroso.apiinflux.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 public class Plantacion {
 
@@ -18,13 +20,24 @@ public class Plantacion {
     @Column(name = "tipo_producto")
     private String tipoProducto;
 
-    public Plantacion(String nombre, String ubicacion, String tipoProducto) {
+    @OneToMany(mappedBy = "plantacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sensor> sensores;
+
+    public Plantacion() {
+    }
+
+    public Plantacion(Long id, String nombre, String ubicacion, String tipoProducto) {
+        this.id = id;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.tipoProducto = tipoProducto;
     }
 
-    public Plantacion() {}
+    public Plantacion(String nombre, String ubicacion, String tipoProducto) {
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.tipoProducto = tipoProducto;
+    }
 
     public Long getId() {
         return id;
@@ -58,6 +71,14 @@ public class Plantacion {
         this.tipoProducto = tipoProducto;
     }
 
+    public List<Sensor> getSensores() {
+        return sensores;
+    }
+
+    public void setSensores(List<Sensor> sensores) {
+        this.sensores = sensores;
+    }
+
     @Override
     public String toString() {
         return "Plantacion{" +
@@ -65,6 +86,7 @@ public class Plantacion {
                 ", nombre='" + nombre + '\'' +
                 ", ubicacion='" + ubicacion + '\'' +
                 ", tipoProducto='" + tipoProducto + '\'' +
+                ", sensores=" + sensores +
                 '}';
     }
 }
