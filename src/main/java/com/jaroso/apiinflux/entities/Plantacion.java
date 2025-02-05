@@ -1,5 +1,6 @@
 package com.jaroso.apiinflux.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,10 +30,15 @@ public class Plantacion {
     @OneToMany(mappedBy = "plantacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sensor> sensores;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "usuario_id")
+    private User usuario;
+
     public Plantacion() {
     }
 
-    public Plantacion(Long id, String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto) {
+    public Plantacion(Long id, String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto, User usuario) {
         this.id = id;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
@@ -40,15 +46,25 @@ public class Plantacion {
         this.provincia = provincia;
         this.ciudad = ciudad;
         this.tipoProducto = tipoProducto;
+        this.usuario = usuario;
     }
 
-    public Plantacion(String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto) {
+    public Plantacion(String nombre, String ubicacion, String pais, String provincia, String ciudad, String tipoProducto, User usuario) {
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.pais = pais;
         this.provincia = provincia;
         this.ciudad = ciudad;
         this.tipoProducto = tipoProducto;
+        this.usuario = usuario;
+    }
+
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
     }
 
     public Long getId() {

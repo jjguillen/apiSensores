@@ -29,6 +29,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private List<UserAuthority> authorities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Plantacion> plantaciones = new ArrayList<>();
+
     public User() {
     }
 
@@ -78,13 +81,16 @@ public class User implements UserDetails {
         return true;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public List<Plantacion> getPlantaciones() {
+        return plantaciones;
     }
 
     public void setId(Long id) {
@@ -103,9 +109,15 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public void setPlantaciones(List<Plantacion> plantaciones) {
+        this.plantaciones = plantaciones;
+    }
+
     public void setAuthorities(List<UserAuthority> authorities) {
         this.authorities = authorities;
     }
+
+
 
     @Override
     public String toString() {

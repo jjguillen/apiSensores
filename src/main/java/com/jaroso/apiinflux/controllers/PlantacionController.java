@@ -1,6 +1,7 @@
 package com.jaroso.apiinflux.controllers;
 
 import com.influxdb.query.FluxTable;
+import com.jaroso.apiinflux.dto.PlantacionDTO;
 import com.jaroso.apiinflux.entities.Plantacion;
 import com.jaroso.apiinflux.entities.Sensor;
 import com.jaroso.apiinflux.services.PlantacionService;
@@ -39,13 +40,18 @@ public class PlantacionController {
     }
 
     @PostMapping
-    public Plantacion savePlantacion(@RequestBody Plantacion plantacion) {
-        return plantacionService.savePlantacion(plantacion);
+    public Plantacion savePlantacion(@RequestBody PlantacionDTO plantacionDTO) {
+        return plantacionService.savePlantacion(plantacionDTO);
     }
 
     @DeleteMapping("/{id}")
     public String deletePlantacion(@PathVariable String id) {
         return plantacionService.deletePlantacionById(Long.valueOf(id));
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public List<Plantacion> getPlantacionesByUsuario(@PathVariable String idUsuario) {
+        return plantacionService.getPlantacionesByUsuario(Long.valueOf(idUsuario));
     }
 
 }
