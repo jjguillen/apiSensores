@@ -27,6 +27,7 @@ public class UserService {
         User user = new User();
         user.setUsername(userRegisterDTO.username());
         user.setEmail(userRegisterDTO.email());
+        //Falta comprobación de que password2 es igual a password
         user.setPassword(this.passwordEncoder.encode(userRegisterDTO.password()));
         return this.userRepository.save(user);
     }

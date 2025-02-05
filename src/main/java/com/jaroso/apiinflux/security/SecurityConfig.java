@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/api/data/**").permitAll()  //No me va
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -39,6 +40,7 @@ public class SecurityConfig {
 
         //Añadimos middleware/filtro que comprueba el token JWT en las peticiones que requieren autenticación
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
 

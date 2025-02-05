@@ -24,18 +24,18 @@ public class SensorDataController {
         return "Datos escritos correctamente";
     }
 
-    @GetMapping
-    public List<FluxTable> readData(@RequestParam Long sensorId) {
+    @GetMapping("/{sensorId}")
+    public List<FluxTable> readData(@PathVariable Long sensorId) {
         return sensorDataService.getDataBySensorId(sensorId);
     }
 
-    @GetMapping("/hour")
-    public List<FluxTable> readDataOneHour(@RequestParam Long sensorId) {
+    @GetMapping("/hour/{sensorId}")
+    public List<FluxTable> readDataOneHour(@PathVariable Long sensorId) {
         return sensorDataService.getDataOneHourBySensorId(sensorId);
     }
 
-    @GetMapping("/day")
-    public List<FluxTable> readDataOneDay(@RequestParam Long sensorId) {
+    @GetMapping("/day/{sensorId}")
+    public List<FluxTable> readDataOneDay(@PathVariable Long sensorId) {
         return sensorDataService.getDataOneDayBySensorId(sensorId);
     }
 }
