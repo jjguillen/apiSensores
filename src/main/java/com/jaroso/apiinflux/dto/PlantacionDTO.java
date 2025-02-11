@@ -10,7 +10,6 @@ public class PlantacionDTO {
     private String provincia;
     private String ciudad;
     private String tipoProducto;
-    private Long usuarioId;
 
     public PlantacionDTO() {
     }
@@ -63,11 +62,4 @@ public class PlantacionDTO {
         this.tipoProducto = tipoProducto;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
 }

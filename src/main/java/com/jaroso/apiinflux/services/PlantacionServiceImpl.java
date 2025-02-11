@@ -7,6 +7,7 @@ import com.jaroso.apiinflux.entities.User;
 import com.jaroso.apiinflux.repositories.PlantacionRepository;
 import com.jaroso.apiinflux.repositories.SensorRepository;
 import com.jaroso.apiinflux.repositories.UserRepository;
+import com.jaroso.apiinflux.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,13 @@ public class PlantacionServiceImpl implements PlantacionService {
     private final PlantacionRepository plantacionRepository;
     private final UserRepository userRepository;
 
-    public PlantacionServiceImpl(PlantacionRepository plantacionRepository, UserRepository userRepository) {
+    public PlantacionServiceImpl(PlantacionRepository plantacionRepository, UserRepository userRepository, JwtUtil jwUtil) {
         this.plantacionRepository = plantacionRepository;
         this.userRepository = userRepository;
     }
 
     @Override
-    public Plantacion savePlantacion(PlantacionDTO plantacionDTO) {
-        User usuario = userRepository.findById(plantacionDTO.getUsuarioId()).orElse(null);
-        if (usuario == null) {
-            throw new RuntimeException("Usuario no encontrada");
-        }
+    public Plantacion savePlantacion(PlantacionDTO plantacionDTO, User usuario) {
 
         Plantacion plantacion = new Plantacion();
         plantacion.setNombre(plantacionDTO.getNombre());
@@ -64,8 +61,8 @@ public class PlantacionServiceImpl implements PlantacionService {
     }
 
     @Override
-    public List<Plantacion> getPlantacionesByUsuario(Long idUsuario) {
-        return plantacionRepository.findPlantacionByUsuarioId(idUsuario);
+    public List<Plantacion> getPlantacionesByUsuario(String usuario) {
+        return plantacionRepository.findPlantacionByUsuarioUsername(usuario);
     }
 
 }

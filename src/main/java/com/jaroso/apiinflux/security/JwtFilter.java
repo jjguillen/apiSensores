@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public JwtUtil jwtUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -57,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     }
 
-    private String extractToken(HttpServletRequest request){
+    public String extractToken(HttpServletRequest request){
         //Al pasar el token desde Postman o el front se pasará como: "Bearer <token>"
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null) {

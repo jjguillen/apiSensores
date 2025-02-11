@@ -14,4 +14,5 @@ public interface PlantacionRepository extends JpaRepository<Plantacion, Long> {
     Optional<Plantacion> findPlantacionById(Long id);
     List<Plantacion> findPlantacionByTipoProducto(String tipoProducto);
     List<Plantacion> findPlantacionByUsuarioId(Long idUsuario);
+    List<Plantacion> findPlantacionByUsuarioUsername(String username);
 }

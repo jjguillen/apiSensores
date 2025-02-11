@@ -4,8 +4,12 @@ import com.influxdb.query.FluxTable;
 import com.jaroso.apiinflux.dto.PlantacionDTO;
 import com.jaroso.apiinflux.entities.Plantacion;
 import com.jaroso.apiinflux.entities.Sensor;
+import com.jaroso.apiinflux.entities.User;
+import com.jaroso.apiinflux.repositories.UserRepository;
+import com.jaroso.apiinflux.security.JwtFilter;
 import com.jaroso.apiinflux.services.PlantacionService;
 import com.jaroso.apiinflux.services.SensorService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import retrofit2.http.Path;
 
@@ -17,10 +21,14 @@ public class PlantacionController {
 
     private final PlantacionService plantacionService;
     private final SensorService sensorService;
+    private final JwtFilter jwtFilter;
+    private final UserRepository userRepository;
 
-    public PlantacionController(PlantacionService plantacionService, SensorService sensorService) {
+    public PlantacionController(PlantacionService plantacionService, SensorService sensorService, JwtFilter jwtFilter, UserRepository userRepository) {
         this.plantacionService = plantacionService;
         this.sensorService = sensorService;
+        this.jwtFilter = jwtFilter;
+        this.userRepository = userRepository;
     }
 
 
@@ -40,8 +48,23 @@ public class PlantacionController {
     }
 
     @PostMapping
-    public Plantacion savePlantacion(@RequestBody PlantacionDTO plantacionDTO) {
-        return plantacionService.savePlantacion(plantacionDTO);
+    public Plantacion savePlantacion(HttpServletRequest request, @RequestBody PlantacionDTO plantacionDTO) {
+        String token = jwtFilter.extractToken(request);
+        if (token != null) {
+            String userName = jwtFilter.jwtUtil.getUsernameFromToken(token);
+            if (userName != null) {
+                User user = userRepository.findUserByUsername(userName).orElse(null);
+                if (user != null) {
+                    return plantacionService.savePlantacion(plantacionDTO, user);
+                }
+            } else {
+                throw new RuntimeException("Usuario no encontrada");
+            }
+        } else {
+            throw new RuntimeException("Token no encontrado");
+        }
+
+        return null;
     }
 
     @DeleteMapping("/{id}")
@@ -49,9 +72,23 @@ public class PlantacionController {
         return plantacionService.deletePlantacionById(Long.valueOf(id));
     }
 
-    @GetMapping("/usuario/{idUsuario}")
-    public List<Plantacion> getPlantacionesByUsuario(@PathVariable String idUsuario) {
-        return plantacionService.getPlantacionesByUsuario(Long.valueOf(idUsuario));
+    @GetMapping("/usuario")
+    public List<Plantacion> getPlantacionesByUsuario(HttpServletRequest request) {
+        String token = jwtFilter.extractToken(request);
+        if (token != null) {
+            String userName = jwtFilter.jwtUtil.getUsernameFromToken(token);
+            if (userName != null) {
+                User user = userRepository.findUserByUsername(userName).orElse(null);
+                if (user != null) {
+                    return plantacionService.getPlantacionesByUsuario(user.getUsername());
+                }
+            } else {
+                throw new RuntimeException("Usuario no encontrada");
+            }
+        } else {
+            throw new RuntimeException("Token no encontrado");
+        }
+        return null;
     }
 
 }
